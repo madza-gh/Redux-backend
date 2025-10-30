@@ -25,3 +25,10 @@ mongoose.connect(MONGO_URI)
     process.exit(1)
 })
 
+process.on("SIGINT", async () => {
+  console.log("\nReceived SIGINT. Closing MongoDB connection...");
+  await mongoose.connection.close();
+  console.log("MongoDB connection closed. Exiting.");
+  process.exit(0);
+});
+
