@@ -1,4 +1,4 @@
-import Product from '../models/productModel'
+import Product from '../models/productModel.js'
 
 export const getProducts = async(req, res) =>{
     try {
@@ -13,9 +13,7 @@ export const getProducts = async(req, res) =>{
 export const getProductById = async(req, res) =>{
     try {
         const product = await Product.findById(req.params.id)
-        if(!product){
-            res.status(404).json({message: 'product not found'})
-        }
+        if(!product) return res.status(404).json({message: 'product not found'})
         res.json(product)
 
     } catch (error) {   
