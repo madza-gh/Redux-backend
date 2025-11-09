@@ -8,17 +8,17 @@ import {
 } from "../controllers/productController.js"
 
 
-const router = express.Router()
+const productsRoutes = express.Router()
 
 
-router.get('/', getProducts)
+productsRoutes.get('/', getProducts)
 
-router.get('/:id', getProductById)
+productsRoutes.get('/:id', getProductById)
 
-router.post('/',createProduct)
+productsRoutes.post('/',createProduct)
 
-router.put('/:id', updateProduct)
+productsRoutes.put('/:id', updateProduct)
 
-router.delete('/:id', deleteProduct)
+productsRoutes.delete('/:id', deleteProduct)
 
-export default router
+export default productsRoutes
