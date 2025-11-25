@@ -1,8 +1,8 @@
 import { User } from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 
-const generateToken = (id) => {
-    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: "30d"})
+const generateToken = (id, role) => {
+    return jwt.sign({id, role}, process.env.JWT_SECRET, {expiresIn: "30d"})
 }
 
 export const registerUser = async(req, res) =>{
@@ -17,7 +17,8 @@ export const registerUser = async(req, res) =>{
             _id: user._id,
             name: user.name,
             email: user.email,
-            token: generateToken(user._id)
+            role: user.role,
+            token: generateToken(user._id, user.role)
         })
 
     } catch (error) {
@@ -35,7 +36,8 @@ export const loginUser = async(req, res) =>{
                 _id: user._id,
                 name: user.name,
                 email: user.email,
-                token:generateToken(user._id)
+                role: user.role,
+                token:generateToken(user._id, user.role)
 
             })
         }else {
@@ -48,8 +50,12 @@ export const loginUser = async(req, res) =>{
 }
 
 export const getUserProfile = async (req, res) => {
-    const user = req.user
-    
-    if(user) res.json(user)
-    else res.status(404).json({message: "User not found!"})
+   try {
+        const user = await User.findById(req.user.id).select('-password')
+
+        if(user) res.json(user)
+        else res.status(404).json({message: 'user not found!'})
+   } catch (error) {
+        res.status(500).json({message: error.message})
+   }
 }
