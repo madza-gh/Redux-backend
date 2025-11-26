@@ -6,6 +6,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/productController.js"
+import { admin, protect } from "../middleware/authMiddleware.js"
 
 
 const productsRoutes = express.Router()
@@ -15,10 +16,10 @@ productsRoutes.get('/', getProducts)
 
 productsRoutes.get('/:id', getProductById)
 
-productsRoutes.post('/',createProduct)
+productsRoutes.post('/', protect, admin, createProduct)
 
-productsRoutes.put('/:id', updateProduct)
+productsRoutes.put('/:id', protect, admin, updateProduct)
 
-productsRoutes.delete('/:id', deleteProduct)
+productsRoutes.delete('/:id', protect, admin, deleteProduct)
 
 export default productsRoutes
